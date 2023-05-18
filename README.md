@@ -41,14 +41,15 @@ make install
 Files related to application are in the `app` or `tests` directories.
 Application parts are:
 
-   app                 # Fast-API stuff
+    app
     |
-    | 
-    ├── api                 - web routes
-    ├── core                - application configuration, startup events, logging.
-    ├── models              - pydantic models for this application.
-    ├── services            - logic that is not just crud related.
-    ├── main.py             - FastAPI application creation and configuration.
+    | # Fast-API stuff
+    ├── api.py                 - web related stuff.
+    ├── config.py              - application configuration, startup events, logging.
+    ├── models.py              - sqlalchemy models for this application.
+    ├── schemas.py             - pydantic models for this application.    
+    ├── services.py            - logic that is not just crud related.
+    └── main.py                - FastAPI application creation and configuration.
+    |
     │
-   tests               # Pytest stuff
-│     └── test_*            - unittest.
+    └── tests            - pytest

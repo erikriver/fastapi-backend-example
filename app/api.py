@@ -1,4 +1,4 @@
-from fastapi import Depends, APIRouter
+from fastapi import Depends, APIRouter, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .model import get_async_session
@@ -14,12 +14,16 @@ router = APIRouter(prefix=settings.api_prefix, tags=["vehicule"])
 @router.get("/lookup/{vin}", response_model=Vehicle)
 async def lookup(vin: str, session: AsyncSession = Depends(get_async_session)):
     vehicle = await get_vehicle(vin, session)
+    if not vehicle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
     return vehicle
 
 
 @router.delete("/remove/{vin}")
 async def remove(vin: str, session: AsyncSession = Depends(get_async_session)):
     vehicle = await delete_vehicle(vin, session)
+    if not vehicle:
+        raise HTTPException(status_code=404, detail="Vehicle not found")
     return vehicle
 
 
