@@ -23,4 +23,9 @@ def test_remove_vin():
 def test_export_vins():
     response = client.post(f"/v1/export")
     assert response.status_code == 200
-    assert response.json() == {"message": f"Export data!"}
+
+    assert response.headers["content-type"] == "application/octet-stream"
+    assert (
+        response.headers["content-disposition"]
+        == "attachment; filename=vehicles.parquet"
+    )

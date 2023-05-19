@@ -22,7 +22,6 @@ class Vehicle(Vin):
     model: str
     model_year: str
     body_class: str
-    deleted: bool
 
     class Config:
         orm_mode = True
