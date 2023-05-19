@@ -4,6 +4,7 @@ import pandas as pd
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from .model import async_session_maker
+from .exceptions import VPICAPIException, VehicleNotFoundException
 
 ######################
 #
@@ -27,24 +28,26 @@ def get_vehicle_raw_data(vin: str):
         data = response.json()
         return data
     else:
-        # raise API Error
-        return None
+        raise VPICAPIException
 
 
-def extract_vehicle_data_required(data: dict):
-    # Ugly but quick
-    return {
-        item["Variable"].lower().replace(" ", "_"): item["Value"]
-        for item in data["Results"]
-        if item["VariableId"] in VEHICLE_API_FIELDS_REQUIRED
-    }
-
-
-def get_vehicle_data(vin: str):
+async def get_vehicle_data(vin: str):
     raw_data = get_vehicle_raw_data(vin)
-    if raw_data:
-        return extract_vehicle_data_required(raw_data)
-    # raise No Data
+
+    result = {}
+    errors = 0
+    for item in raw_data["Results"]:
+        if item["VariableId"] in VEHICLE_API_FIELDS_REQUIRED:
+            result[item["Variable"].lower().replace(" ", "_")] = item["Value"]
+            # When a Vehicle is not found, their values are None
+            if item["Value"] is None:
+                errors += 1
+
+    print(result)
+    if errors >= 3:
+        raise VehicleNotFoundException
+
+    return result
 
 
 ######################
