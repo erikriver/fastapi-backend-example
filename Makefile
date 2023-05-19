@@ -22,7 +22,7 @@ endif
 all: clean test install run deploy down
 
 test:
-	poetry run pytest tests -vv --show-capture=all
+	DATABASE_URL=sqlite+aiosqlite:///./test.db poetry run pytest tests -vv --show-capture=all
 
 install: generate_dot_env
 	pip install --upgrade pip

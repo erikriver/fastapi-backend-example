@@ -2,17 +2,12 @@ from fastapi import Depends, APIRouter, HTTPException, Path, status
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from .model import get_async_session
+from .db import get_async_session
 from .config import get_settings
-from .schemas import Vehicle as VehicleSchema
+from .models import Vehicle as VehicleSchema
 from .crud import get_vehicle, delete_vehicle
 from .service import export_to_parquet
-from .exceptions import (
-    VehicleDeletedException,
-    VehicleNotFoundException,
-    VPICAPIException,
-    VehicleNotCachedException,
-)
+from .exceptions import *
 
 settings = get_settings()
 

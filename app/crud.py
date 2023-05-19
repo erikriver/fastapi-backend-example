@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import select
 
-from .model import get_async_session, Vehicle
+from .db import get_async_session, Vehicle
 from .service import get_vehicle_data
 from .config import get_settings
 from .exceptions import VehicleDeletedException, VehicleNotCachedException
@@ -33,7 +33,7 @@ async def get_vehicle(vin: str, session: AsyncSession):
         return vehicle
 
 
-async def delete_vehicle(vin: str, session: AsyncSession = Depends(get_async_session)):
+async def delete_vehicle(vin: str, session: AsyncSession):
     try:
         result = await session.execute(select(Vehicle).where(Vehicle.vin == vin))
         vehicle = result.scalars().first()

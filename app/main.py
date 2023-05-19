@@ -2,7 +2,7 @@ from typing_extensions import Annotated
 
 from fastapi import Depends, FastAPI
 
-from app.model import create_db_and_tables
+from app.db import create_db_and_tables
 from app.api import router as api_router
 from app.config import Settings, get_settings
 
