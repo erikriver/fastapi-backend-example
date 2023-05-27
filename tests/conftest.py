@@ -5,7 +5,6 @@ import asyncio
 import pytest
 import pytest_asyncio
 from httpx import AsyncClient
-from starlette.testclient import TestClient
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from app.config import get_settings
@@ -57,6 +56,12 @@ def create_vehicle(db: AsyncSession):
         return vehicle
 
     return inner
+
+
+@pytest_asyncio.fixture(scope="session")
+async def vehicle(db: AsyncSession, create_vehicle):
+    vehicle = await create_vehicle()
+    return vehicle
 
 
 @pytest_asyncio.fixture(scope="session")

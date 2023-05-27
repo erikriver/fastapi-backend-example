@@ -3,16 +3,23 @@ import pytest
 
 @pytest.mark.asyncio
 async def test_lookup_vin_malformed(client):
-    response = await client.get(f"/v1/lookup/xyz")
+    # Less than 17 chars
+    response = await client.get(f"/v1/lookup/XYZ123")
+    assert response.status_code == 422
+
+    # More than 17 chars
+    response = await client.get(f"/v1/lookup/AOEUIDRTNS12345678")
     assert response.status_code == 422
 
 
 @pytest.mark.asyncio
-async def test_lookup_vin(client, create_vehicle):
-    v = await create_vehicle()
-    response = await client.get(f"/v1/lookup/{v.vin}")
+async def test_lookup_vin(client, vehicle):
+    response = await client.get(f"/v1/lookup/{vehicle.vin}")
     assert response.status_code == 200
-    assert response.json()["model"] == v.model
+    assert response.json()["make"] == vehicle.make
+    assert response.json()["model"] == vehicle.model
+    assert response.json()["model_year"] == vehicle.model_year
+    assert response.json()["body_class"] == vehicle.body_class
     assert response.json()["cached"] == True
 
 
@@ -24,11 +31,13 @@ async def test_remove_vin_not_found(client):
 
 
 @pytest.mark.asyncio
-async def test_remove_vin(client, create_vehicle):
-    v = await create_vehicle()
-    response = await client.delete(f"/v1/remove/{v.vin}")
+async def test_remove_vin(client, vehicle):
+    response = await client.delete(f"/v1/remove/{vehicle.vin}")
     assert response.status_code == 200
-    assert response.json()["detail"] == f"The Vehicle {v.vin} was deleted successful."
+    assert (
+        response.json()["detail"]
+        == f"The Vehicle {vehicle.vin} was deleted successful."
+    )
     assert response.json()["deleted"] == True
 
 
