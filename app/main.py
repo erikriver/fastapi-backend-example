@@ -2,9 +2,9 @@ from typing_extensions import Annotated
 
 from fastapi import Depends, FastAPI
 
-from app.db import create_db_and_tables
-from app.api import router as api_router
-from app.config import Settings, get_settings
+from db import create_db_and_tables
+from api import router as api_router
+from config import Settings, get_settings
 
 
 def get_application(settings: Settings) -> FastAPI:

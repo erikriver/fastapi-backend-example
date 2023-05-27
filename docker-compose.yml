@@ -1,6 +1,20 @@
 version: "3"
 
 services:
+  reverse-proxy:
+    image: traefik:latest
+    command:
+      - "--log.level=DEBUG"
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock 
+
   app:
     build: 
       context: .
@@ -14,3 +28,8 @@ services:
     volumes:
       - ./app:/app/
       - ./ml/model/:/app/ml/model/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.app.rule=Host(`app.localhost`)"
+      - "traefik.http.routers.app.entrypoints=web"
+      - "traefik.http.services.app.loadBalancer.server.port=8080"

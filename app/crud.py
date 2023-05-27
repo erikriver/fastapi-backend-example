@@ -3,10 +3,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm.exc import NoResultFound
 from sqlalchemy import select
 
-from .db import get_async_session, Vehicle
-from .service import get_vehicle_data
-from .config import get_settings
-from .exceptions import VehicleDeletedException, VehicleNotCachedException
+from db import get_async_session, Vehicle
+from service import get_vehicle_data
+from config import get_settings
+from exceptions import VehicleDeletedException, VehicleNotCachedException
 
 settings = get_settings()
 
