@@ -3,8 +3,8 @@ import requests
 import pandas as pd
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from db import async_session_maker
-from exceptions import VPICAPIException, VehicleNotFoundException
+from app.db import async_session_maker
+from app.exceptions import VPICAPIException, VehicleNotFoundException
 
 ######################
 #

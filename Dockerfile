@@ -2,17 +2,17 @@ FROM python:3.11.3
 
 ENV PYTHONUNBUFFERED 1
 
-WORKDIR /app
+WORKDIR /
+EXPOSE 8080
 
 COPY poetry.lock pyproject.toml ./
+
 RUN pip install --upgrade pip && \
     pip install poetry && \
     poetry config virtualenvs.create false && \
-    poetry install --only main
+    poetry install --no-root --no-dev
 
-COPY ./app/ ./
+COPY ./app /app
+ENV PYTHONPATH=/app
 
-ENV PYTHONPATH "${PYTHONPATH}:/app"
-
-EXPOSE 8080
-CMD uvicorn main:app --host 0.0.0.0 --port 8080
+CMD ["uvicorn", "app.main:app", "--host=0.0.0.0" , "--reload" , "--port", "8080"]
