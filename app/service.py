@@ -1,10 +1,10 @@
 from tempfile import mkstemp
 import requests
 import pandas as pd
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.db import async_session_maker
 from app.exceptions import VPICAPIException, VehicleNotFoundException
+from app.models import VehicleAPI
 
 ######################
 #
@@ -20,7 +20,7 @@ VEHICLE_API_FIELDS_REQUIRED = [
 ]
 
 
-def get_vehicle_raw_data(vin: str):
+async def get_vehicle_raw_data(vin: str):
     url = f"https://vpic.nhtsa.dot.gov/api/vehicles/decodevin/{vin}?format=json"
     response = requests.get(url)
 
@@ -32,7 +32,7 @@ def get_vehicle_raw_data(vin: str):
 
 
 async def get_vehicle_data(vin: str):
-    raw_data = get_vehicle_raw_data(vin)
+    raw_data = await get_vehicle_raw_data(vin)
 
     result = {}
     errors = 0
@@ -43,11 +43,11 @@ async def get_vehicle_data(vin: str):
             if item["Value"] is None:
                 errors += 1
 
-    print(result)
     if errors >= 3:
         raise VehicleNotFoundException
 
-    return result
+    result["vin"] = vin
+    return VehicleAPI(**result)
 
 
 ######################

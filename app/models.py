@@ -6,7 +6,7 @@ class Vin(BaseModel):
     vin: str
 
 
-class VehicleCreate(Vin):
+class VehicleAPI(Vin):
     make: str
     model: str
     model_year: str

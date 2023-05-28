@@ -25,8 +25,7 @@ async def get_vehicle(vin: str, session: AsyncSession):
 
     except AttributeError:
         data = await get_vehicle_data(vin)
-        vehicle = Vehicle(**data)
-        vehicle.vin = vin
+        vehicle = Vehicle(**data.dict())
         session.add(vehicle)
         await session.commit()
         vehicle.cached = False
