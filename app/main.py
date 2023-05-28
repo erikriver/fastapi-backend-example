@@ -3,13 +3,14 @@ from typing_extensions import Annotated
 from fastapi import Depends, FastAPI
 
 from app.db import create_db_and_tables
-from app.api import router as api_router
+from app.api import router as api_router, security
 from app.config import Settings, get_settings
 
 
 def get_application(settings: Settings) -> FastAPI:
     application = FastAPI(title=settings.project_name, debug=settings.debug)
     application.include_router(api_router)
+    application.include_router(security)
     return application
 
 

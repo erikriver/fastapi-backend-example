@@ -8,6 +8,10 @@ class Settings(BaseSettings):
     debug: bool = False
     database_url: str = "sqlite+aiosqlite:///./vins.db"
 
+    secret_key: str = "so_secret!!!"
+    access_token_expire_minutes: int = 10
+    algorithm: str = "HS256"
+
     class Config:
         env_file = ".env"
 
