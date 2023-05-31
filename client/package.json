@@ -1,0 +1,29 @@
+{
+  "name": "client-vin-lookup-example",
+  "version": "1.0.0",
+  "description": "Server side rendering Styled Components with Next.js",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.6"
+  },
+  "devDependencies": {
+    "babel-plugin-styled-components": "^2.0.7",
+    "prettier": "^2.8.2"
+  },
+  "overrides": {
+    "lodash": "4.17.21"
+  },
+  "resolutions": {
+    "lodash": "4.17.21"
+  },
+  "homepage": "https://github.com/erikriver/fastapi-backend-example",
+  "author": "Erik Rivera",
+  "license": "MIT"
+}
