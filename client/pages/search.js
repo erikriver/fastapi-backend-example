@@ -7,15 +7,16 @@ import Input from '../components/Input';
 
 const SearchContainer = styled.div`
   background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  margin-bottom: 20px;
+  box-shadow: var(--base-box-shadow);
+  padding: 2.5em 2.5em 2.8em;
+  width: 640px;
+  transition: height 300ms ease 0s;
 `;
 
 const TableContainer = styled.div`
   background-color: white;
   padding: 20px;
-  border-radius: 5px;
+  padding: 2.5em 2.5em 2.8em;
 `;
 
 const Message = styled.p`
@@ -74,7 +75,9 @@ const Search = () => {
           value={query}
           onChange={handleQueryChange}
         />
-        <Button onClick={handleSearch}>Search</Button>
+        <Button type="submit" onClick={handleSearch}>
+          Search
+        </Button>
       </SearchContainer>
       <TableContainer>
         {error && <Message>{error}</Message>}
